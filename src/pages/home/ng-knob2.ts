@@ -105,7 +105,6 @@ export class Knob implements OnInit {
    * Actions when value or options change in host component
    */
   ngOnChanges(changes) {
-
     if (this.defaultOptions != null && changes.options != null && changes.options.currentValue != null && this.value != null) {
       this.options = Object.assign(this.defaultOptions, changes.options.currentValue);
       this.draw();
@@ -140,7 +139,6 @@ export class Knob implements OnInit {
    *   Create the arc
    */
   createArc(innerRadius, outerRadius, startAngle?, endAngle?, cornerRadius?) {
-    // console.log('d3', d3);
 
     var arc = d3.arc()
       .innerRadius(innerRadius)
@@ -154,9 +152,6 @@ export class Knob implements OnInit {
    *   Draw the arc
    */
   drawArc(svg, arc, label, style, click?, drag?) {
-    console.log(style)    
-
-    // console.log('almg drawArc',{svg, arc, label, style, click, drag});
     var elem = svg.append('path')
       .attr('id', label)
       .attr('d', arc)
@@ -168,7 +163,6 @@ export class Knob implements OnInit {
       elem.style(style_key, style_val);
     }
 
-    // console.log('almg drawArc elem',{elem});
     if (this.options.readOnly === false) {
       if (click) {
         svg.on('click', click);
@@ -244,9 +238,6 @@ export class Knob implements OnInit {
       .attr("height", this.options.size);
 
     // svg = svg._groups[0];
-
-    // console.log('almg',{"svg":svg});
-
 
     if (this.options.bgColor) {
       this.drawArc(svg, this.bgArc, 'bgArc', { "fill": this.options.bgColor });
@@ -367,7 +358,6 @@ export class Knob implements OnInit {
 
       }
     }
-    console.log(this.options);
     if (this.options.skin.type === 'tron') {
       this.drawArc(svg, this.hoopArc, 'hoopArc', { "fill": this.options.skin.color });
     }
@@ -378,7 +368,6 @@ export class Knob implements OnInit {
       this.changeElem = this.drawArc(svg, this.changeArc, 'changeArc', { "fill-opacity": 0 });
     }
     this.valueElem = this.drawArc(svg, this.valueArc, 'valueArc', { "fill": this.options.barColor });
-    // console.log('almg',{"valueElem":this.valueElem});
 
     var cursor = "pointer";
     if (this.options.readOnly) {
@@ -393,8 +382,6 @@ export class Knob implements OnInit {
     d3.select(this.element).select("svg").remove();
     var that = this;
 
-    // console.log(d3.select(this.element));
-
     that.createArcs();
 
     var dragBehavior = d3.drag()
@@ -404,7 +391,6 @@ export class Knob implements OnInit {
     that.drawArcs(clickInteraction, dragBehavior);
 
     if (that.options.animate.enabled) {
-      // console.log('almg that.valueElem',that.valueElem);
       that.valueElem.transition()
         .ease(d3.easeLinear)
 
@@ -425,19 +411,17 @@ export class Knob implements OnInit {
     }
 
     function dragInteraction() {
-      console.log("drag")
       that.inDrag = true;
       var x = d3.event.x - (that.options.size / 2);
-      var y = d3.event.y - (that.options.size / 2);
-      interaction(x, y, false);
+      var y = d3.event.y + (that.options.size / 2);
+      interaction(x, y, true);
     }
 
     function clickInteraction() {
-      console.log("click")
       that.inDrag = false;
       var coords = d3.mouse(this.parentNode);
       var x = coords[0] - (that.options.size / 2);
-      var y = coords[1] - (that.options.size / 2);
+      var y = coords[1] + (that.options.size / 2);
       interaction(x, y, true);
     }
 
@@ -452,7 +436,7 @@ export class Knob implements OnInit {
           delta = -90;
         }
       }
-
+      
       radians = (delta + arc) * (Math.PI / 180);
       that.value = that.radiansToValue(radians, that.options.max, that.options.min, that.options.endAngle, that.options.startAngle);
       if (that.value >= that.options.min && that.value <= that.options.max) {
@@ -481,8 +465,7 @@ export class Knob implements OnInit {
    *   Set a value
    */
   setValue(newValue) {
-    // console.log('setval');
-    if ((!this.inDrag) && this.value >= this.options.min && this.value <= this.options.max) {
+    if (this.value >= this.options.min && this.value <= this.options.max) {
       var radians = this.valueToRadians(newValue, this.options.max, this.options.endAngle, this.options.startAngle, this.options.min);
       this.value = Math.round(((~~(((newValue < 0) ? -0.5 : 0.5) + (newValue / this.options.step))) * this.options.step) * 100) / 100;
       if (this.options.step < 1) {

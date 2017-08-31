@@ -10,8 +10,10 @@
 <ion-content padding>
   <h3>Ionic Menu Starter</h3>
 
-
-  <ui-knob  [options]="_DHT22KnobHumidityOptions" [(value)]="_DHT22KnobHumidityValue"></ui-knob>
+  <div class="knob-rect">
+    <ui-knob  [options]="_DHT22KnobHumidityOptions" [(value)]="_DHT22KnobHumidityValue"></ui-knob>
+  </div>
+  
 <!-- <h3>Knob Use Example</h3>
     <div class="container">
         <knob class="skin1" #myknob1 [min]="10" [max]="200" [value]="80" [startDegree]="200"  [endDegree]="120"></knob>
