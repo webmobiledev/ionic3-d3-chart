@@ -5,5 +5,8 @@
   "integrations": {
     "gulp": {}
   },
-  "watchPatterns": []
+  "watchPatterns": [],
+  "gulp": {
+    "enabled": false
+  }
 }

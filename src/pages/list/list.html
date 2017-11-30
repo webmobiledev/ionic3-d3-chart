@@ -3,18 +3,11 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>List</ion-title>
+    <ion-title>Pie</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-
-  <input #knob type="text" [(ngModel)]="value"class="dial">
-
-
-  <input type="text" [(ngModel)]="value" (ngModelChange)="change()" class="dial">
-
-
-
-
+  <input #knob type="number" [(ngModel)]="value"class="dial">
+  <ion-input type="number" [(ngModel)]="value" (ngModelChange)="change()" class="dial"></ion-input>
 </ion-content>
